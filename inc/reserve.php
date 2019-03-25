@@ -24,10 +24,10 @@ if (isset($_POST["submit"])) {
 
 	if (empty($reservedate) || empty($endReserve) || empty($forWho) || empty($pepolenumber)) 
 	{
-		echo "<script>window.location.href='../index.php?error=empty';</script>";
+		echo "<script>window.location.href='../rooms.php?error=empty';</script>";
 	}
 	elseif ($pepolenumber > 20) {
-		echo "<script>window.location.href='../index.php?error=big';</script>";
+		echo "<script>window.location.href='../rooms.php?error=big';</script>";
 	}
 	else
 	{	
@@ -45,7 +45,7 @@ if (isset($_POST["submit"])) {
 				$userid = $userstuff["id"];
 			}
 
-			if ($now > date_format($reservedate, "Y-m-d H:i:s")) {echo "<script>window.location.href='../index.php?error=wrongDate';</script>";}
+			if ($now > date_format($reservedate, "Y-m-d H:i:s")) {echo "<script>window.location.href='../rooms.php?error=wrongDate';</script>";}
 
 			else
 			{
@@ -60,12 +60,12 @@ if (isset($_POST["submit"])) {
 					if (!(in_array($roomNumber, $reservedThen))) {
 						$insertString = "INSERT INTO `reservations` (`id`, `forWho`, `reserve_date`, `reserve_date_end`, `message`, `pepoleNo`, `reserved_by`, `room_id`, `reserved_at`) VALUES (NULL, '$forWho', '".date_format($reservedate, 'Y-m-d H:i:s')."', '".date_format($endReserve, 'Y-m-d H:i:s')."','$message', '$pepolenumber', '$userid', '$roomNumber', '$bookedat')";
 						mysqli_query($conn, $insertString);
-						#header("location: " .$_SERVER["http-referer"]);
+						echo "<script>window.location.href='../rooms.php?success=thankyou';</script>";
 						var_dump($insertString);
 					}
 					else
 					{
-						echo "<script>window.location.href='../index.php?error=reserved';</script>";
+						echo "<script>window.location.href='../rooms.php?error=reserved';</script>";
 					}
 			}
 
