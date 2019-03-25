@@ -1,5 +1,17 @@
 <?php
-session_start()
+session_start();
+error_reporting(E_ALL & ~E_NOTICE); //Hide php notifications on the page
+
+    require_once "inc/db.php";
+    $db = db::get();
+
+    if (isset($_GET["success"])) {
+        $success = $db->escape($_GET["success"]);
+    }
+
+    if (isset($_GET["error"])) {
+        $error = $db->escape($_GET["error"]);
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -41,10 +53,6 @@ session_start()
     switch ($error) {
         case 'empty':
         echo "<script>oktext = 'All gaps must be filled.'; errormsg(oktext);</script>";
-        break;
-
-        case 'big':
-        echo "<script>oktext = 'Our biggest table can hosts 20 people. If you need more space, contact us and ask for event booking.'; errormsg(oktext);</script>";
         break;
 
         case 'wrongDate':
