@@ -1,5 +1,17 @@
 <?php
-session_start()
+    session_start();
+    require_once "inc/db.php";
+    $db = db::get();
+    $selectRoomsQuery = "SELECT id FROM rooms WHERE category_id = 3";
+    $allRooms = $db->getArray($selectRoomsQuery);
+    
+    if (isset($_GET["success"])) {
+        $success = $db->escape($_GET["success"]);
+    }
+
+    if (isset($_GET["error"])) {
+        $error = $db->escape($_GET["error"]);
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -11,6 +23,8 @@ session_start()
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="css\bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="css\main.css" />
+    <link rel="stylesheet" href="css/sweetalert2.min.css">
+    <script src="js/sweetalert2.all.min.js"></script>
     <link rel="icon" href="img/img1.jpg"/>
 </head>
 
@@ -89,33 +103,45 @@ session_start()
                         ?>
                 </div>
             </nav>
+
             <div class="container col-9 mt-10">
                 <div class="jumbotron text-center">
                     <h4 class="display-4">Hufflepuff room reserve</h4>
                 </div>
                 <div class="container col-5">
-                    <form action="inc\signup.inc.php" method="post">
+                    <form action="inc\reserve.php" method="post">
                         <div class="card">
                             <div class="card-body mx-3">
                                 <div class="md-form mb-2">
                                     <label for="person">Person:</label>
-                                    <input type="number" class="form-control" name="person" id="person" placeholder="Person">
+                                    <input type="number" class="form-control" name="numberofpepole" id="numberofpepole" placeholder="Person" required="required">
+                                </div>
+                                <div class="md-form mb-2">
+                                    <label for="person">Reserver's name:</label>
+                                    <input type="text" class="form-control" name="forwho" id="forwho" placeholder="Enter your name here" required="required">
+                                </div>
+                                <div class="card-body mx-3">
+                                    <select name="roomNumber" id="roomNumber" class="form-control">
+                                        <?php foreach($allRooms as $room): ?>
+                                            <option value="<?php echo $room['id']; ?>">Room number: <?php echo $room["id"]; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
                                 </div>
                                 <div class="md-form mb-2">
                                     <label for="dateFrom">From:</label>
-                                    <input type="date" class="form-control" name="fromDate" id="fromDate">
+                                    <input type="datetime-local" class="form-control" name="reserve_date" id="reserve_date" required>
                                 </div>
                                 <div class="md-form mb-2">
                                     <label for="dateTo">To:</label>
-                                    <input type="date" class="form-control" name="toDate" id="toDate">
+                                    <input type="datetime-local" class="form-control" name="reserve_date_end" id="reserve_date_end" required>
                                 </div>
                                 <br>
                                 <div class="form-row">
-                                    <textarea class="form-control" name="comment" id="comment" rows="3" placeholder="We are listening"></textarea>
+                                    <textarea class="form-control" name="message" id="message" rows="3" placeholder="We are listening"></textarea>
                                 </div>
                                 <br>
                                 <div class="form-row">
-                                    <button class="btn btn-success" name="sendReserve">Reserve</button>
+                                    <button class="btn btn-success" name="submit">Reserve</button>
                                 </div>
                             </div>
                         </div>
