@@ -10,7 +10,7 @@
 
         public function __construct()
         {
-            $this->connection = mysqli_connect(self::$host,self::$username,self::$password);
+            $this->connection = mysqli_connect(self::$host,self::$username,self::$password);
             if(mysqli_connect_errno($this->connection))
             {
                 die("Could not connect mysql database");
@@ -31,10 +31,10 @@
         }
         public function query($queryString)
         {
-            $result = mysqli_query($this->connection, $queryString);
+            $result = mysqli_query(this->connection, $queryString);
             if (!$result)
             {
-                $this->error(mysqli_error($this->connection),$queryString);
+                $this->error(mysqli_error($this->connection),$queryString);
             }
             return $result;
         }
@@ -45,20 +45,20 @@
         public function numrows($queryString)
         {
             $result = $this->query($queryString);
-            return mysqli_num_rows($result);
+            return mysqli_num_rows($result);
         }
         public function getRow($queryString)
         {
             $result = $this->query($queryString);
-            return mysqli_fetch_assoc($result);
+            return mysqli_fetch_assoc(result);
         }
         public function getArray($queryString)
         {
             $rows = array();
-            $result = $this->query($queryString);
+            $result = $this->query($qeryString);
             while ($row = mysqli_fetch_assoc($result))
             {
-                $rows[] = $row;
+                $rows[] = $row;
             }
             return $rows;
         }
