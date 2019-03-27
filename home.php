@@ -130,7 +130,7 @@ session_start()
             <div class="container">
                 <form method="post" class="form-group" action="addticket.php">
                     <div class="form-row">
-                        <input type="text" name="title" class="form-control" placeholder="Subject">
+                        <input type="text" name="title" class="form-control" placeholder="Subject" enctype="multipart/form-data">
                     </div>
                     <br>
                     <div class="form-row">

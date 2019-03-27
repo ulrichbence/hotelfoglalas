@@ -35,10 +35,10 @@ if (isset($_POST["submit"])) {
 
 			$userid = 9; //basically, you are booking as a quest if you not logged in
 
-			if (isset($_SESSION["username"])) 
+			if (isset($_SESSION["userName"])) 
 			{
 
-				$user = $_SESSION["username"];
+				$user = $_SESSION["userName"];
 				$selectString = "SELECT id FROM users WHERE username = '".$user."'";
 				$selectQuery = mysqli_query($conn, $selectString);
 				$userstuff = mysqli_fetch_assoc($selectQuery);
@@ -51,17 +51,16 @@ if (isset($_POST["submit"])) {
 			{
 					$selectReservedTablesThenQuery = "SELECT reservations.room_id FROM reservations WHERE reservations.reserve_date <= '".date_format($reservedate, 'Y-m-d H:i:s')."' AND reserve_date_end >= '".date_format($endReserve, 'Y-m-d H:i:s')."'";
 					$reservedTablesThen = $db->getArray($selectReservedTablesThenQuery);
-					$reservedThen = array();echo "string";
+					$reservedThen = array();
 
 					foreach ($reservedTablesThen as $tables) {
-						array_push($reservedThen, intval($tables["table_id"]));
+						array_push($reservedThen, intval($tables["room_id"]));
 					}
 
 					if (!(in_array($roomNumber, $reservedThen))) {
 						$insertString = "INSERT INTO `reservations` (`id`, `forWho`, `reserve_date`, `reserve_date_end`, `message`, `pepoleNo`, `reserved_by`, `room_id`, `reserved_at`) VALUES (NULL, '$forWho', '".date_format($reservedate, 'Y-m-d H:i:s')."', '".date_format($endReserve, 'Y-m-d H:i:s')."','$message', '$pepolenumber', '$userid', '$roomNumber', '$bookedat')";
 						mysqli_query($conn, $insertString);
 						echo "<script>window.location.href='../rooms.php?success=thankyou';</script>";
-						var_dump($insertString);
 					}
 					else
 					{
